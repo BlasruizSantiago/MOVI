@@ -1,38 +1,55 @@
-# Listas con DNI, nombre de usuario y contraseña de los usuarios ya existentes en el sistema
-# Migrar a un JSON.
+import random
+from utils import crearMatriz, mostrarUsuarios, existeUsr  # Importa las funciones del módulo
 
-import random # Importa la librería random para generar números aleatorios
-import time # Importa la librería time para usar la función sleep
+transportes = ['Colectivo', 'Tren', 'Subte']
+usuarios = ["Pedro pascal", "John Doe", "Brad Pitt"]
+Pboleto = [60, 120, 250]
 
 def main():
-    time.sleep(0.75)
-    Pboleto = [60, 120, 250] # Precios de los boletos (Colectivo, Tren, Subte)
-    usrActivos = ["Pedro pascal", "John Doe", "Brad Pitt"] # Carga de lista de usuarios activos
-    mTren = crearMatriz(usrActivos, Pboleto[0]) # Crea una matriz con los usuarios activos y el total gastodo por cada uno en Colectivos a lo largo del mes.
-    mSubte = crearMatriz(usrActivos, Pboleto[1]) # Crea una matriz con los usuarios activos y el total gastado por cada uno en Trenes a lo largo del mes.
-    mColectivo = crearMatriz(usrActivos, Pboleto[2]) # Crea una matriz con los usuarios activos y el total gastado por cada uno en Subtes a lo largo del mes.
-    mTransporte = [mColectivo, mTren, mSubte] # Lista que contiene las 3 matrices creadas
-    print("\n-------------------\n\nMenú Principal: \n  1. Registrar un nuevo usuario \n  2. Mostrar Usuarios existentes \n  3. Mostrar Matrices Creadas \n  0. Salir del sistema \n\n-------------------\n")
-    time.sleep(0.75)
-    res = int(input("Ingrese una opción: "))
-    if(res == 1):
-        print("\nFunción de registro de nuevos usuarios deshabilitada temporalmente.")
-        time.sleep(1)
-        print("\nVolviendo al inicio...")
-        time.sleep(1)
-        # Register(usrActivos) # FUNCION NO VALIDA, YA QUE SE REQUIERE DE VARIABLES GLOBALES PARA SU FUNCIONAMIENTO. 
-                               # Hay que guardar el estado en variables que se pasen entre llamadas a la función
-    elif(res == 2):
-        mostrarUsuarios(usrActivos) # Muestra la lista de usuarios activos
-    elif(res == 3):
-        mostrarMatriz(mTransporte, usrActivos) # Muestra la matriz creada con los usuarios activos y el total de lo gastado por cada uno a lo largo del mes.
-        menuEstadisticas(mTransporte, usrActivos) # Muestra el menú de estadísticas
+    # mColectivo = crearMatriz(usuarios, transportes, Pboleto[0])
+    # mTren = crearMatriz(usuarios, transportes, Pboleto[1])
+    # mSubte = crearMatriz(usuarios, transportes, Pboleto[2])
+    mTransporte = crearMatriz(usuarios, transportes, Pboleto) # Matriz usuarios x transporte
+    print(mTransporte)
+    opciones_validas = [0, 1, 2, 3, 4]
+    res = -1  # Inicializa con un valor inválido
+    while res not in opciones_validas:
+        print(
+            "\n" + "="*50 + "\n"
+            "MENÚ PRINCIPAL\n"
+            "" + "-"*50 + "\n"
+            "1. Mostrar listado de usuarios\n"
+            "2. Mostrar precios por transporte\n"
+            "3. Análisis estadísticas\n"
+            "4. Registrar nuevos usuarios\n"
+            "0. Salir del sistema\n"
+            "" + "="*50 + "\n"
+        )
+        entrada = input("Ingrese una opción: ")
+        if entrada.isdigit():
+            res = int(entrada)
+        else:
+            print("\nError: debe ingresar un número. Intente nuevamente.\n")
+            res = -1
+        if res not in opciones_validas and res != -1:
+            print("\nError: número inválido. Intente nuevamente.\n")
+    
+    if res == 1:
+        mostrarUsuarios(usuarios)  # Muestra la lista de usuarios activos
+    elif res == 2:
+        mostrarPreciosTransporte()
+    elif res == 3:
+        menuEstadisticas(mTransporte, usuarios)  # Muestra el menú de estadísticas
+    elif res == 4:
+        registrarNuevoUsuario(usuarios)  # Función para registrar nuevos usuarios
+    elif res == 0:
+        print("\nSaliendo del sistema...")
+        return
     main() # Vuelve al inicio del programa
 
 
 def Register(usrActivos):
     print("\nRegistro de nuevo usuario")
-    time.sleep(0.5)
     usr = input("Ingrese nombre completo del nuevo usuario: ")
     if(existeUsr(usr, usrActivos) == False): # Comprueba si el usuario ya existe en la lista de usuarios activos
         usrActivos.append(usr) # Agrega el nuevo usuario a la lista de usuarios activos
@@ -40,84 +57,82 @@ def Register(usrActivos):
     else:
         print(f"\nEl usuario {usr} ya existe en el sistema.")
 
-# Función que comprueba la existencia del usuario en las listas creadas. 
-def existeUsr(usr, usrActivos):
-    res = False
-    i = 0
-    while (i+1 <= int(len(usrActivos))):
-        if(usr == usrActivos[i]):
-            res = True
-        i += 1
-    return res # Si la respuesta es True, el usuario existe en el sistema. Por el contrario, si devuelve false este no existe.
-
-# Procedimiento que muestra la lista de usuarios activos en el sistema
-def mostrarUsuarios(usrActivos):
-    print("\nUsuarios activos en el sistema:\n")
-    time.sleep(0.5)
-    for i in range(len(usrActivos)):
-        print(f"{i+1}. {usrActivos[i]}")
-        time.sleep(0.5) # Pausa de 0.25 segundos entre cada usuario mostrado
-    print("")
-
-# Función que crea y devuelve una Matriz armada con paarametros asignados
-def crearMatriz(usrActivos, Pboleto):
-    filas = len(usrActivos)
-    columnas = 30 # Días del mes 
-    matriz = []
-    for h in range(3): # Crear 3 matrices, una por cada tipo de boleto (Tren, Subte, Colectivo)
-        for i in range(filas): # Crea una fila por cada usuario activo
-            fila = []
-            for j in range(columnas): # Crea una columna por cada día del mes
-                if (random.randint(0, 10) > 3): # Probabilidad de que el usuario use o no el servicio de transporte  ese día
-                    num = random.randint(1, 15) # Cantidad de viajes realizados ese día
-                    fila.append(num * Pboleto)
-                else:
-                    fila.append(0)
-            matriz.append(fila)
-    return matriz
 
 # Procedimiento que muestra la matriz creada
-def mostrarMatriz(mTransporte, usrActivos):
-    for h in range(3): # Mostrar las 3 matrices, una por cada tipo de boleto (Colectivo, Tren, Subte)
-        print("\n-------------------\n")
-        print(f"Datos de ingresos en {'Colectivo' if h==0 else 'Tren' if h==1 else 'Subte'}:") # Título dinámico según la matriz que se esté mostrando
-        time.sleep(0.5)
-        for i in range(len(usrActivos)):
-            print(f"\nUsuario: {usrActivos[i]}")
-            time.sleep(0.5)
-            k = 1
-            for j in range(len(mTransporte[h][i])): # Recorre las columnas de la matriz
-                print(f"día {k}: ${mTransporte[h][i][j]}", end=" | ")
-                k += 1
-            print("")
-            time.sleep(0.5)
+def mostrarGastosxUsuario(mTransporte, usrActivos):    
+    # Imprimir encabezado
+    print("\n" + "-" * 60)
+    print("GASTOS POR USUARIO Y TIPO DE TRANSPORTE".center(60))
+    print("-" * 60)
+    
+    # Imprimir encabezados de columnas
+    print("USUARIO".ljust(20), end="")
+    for transporte in transportes:
+        print(f"| {transporte.upper().center(10)} ", end="")
+    print("\n" + "-" * 60)
+    
+    # Imprimir filas de datos
+    for i in range(len(usrActivos)):
+        # Imprimir nombre de usuario
+        print(usrActivos[i].ljust(20), end="")
+        
+        # Imprimir gastos por tipo de transporte para este usuario
+        for gastado in range(len(mTransporte[0])):
+            # Calcular el total gastado por este usuario en este transporte
+            print(f"| ${str(gastado).rjust(10)} ", end="")
+        print()  # Nueva línea para el siguiente usuario
+    
+    print("-" * 60 + "\n")
+
+def mostrarPreciosTransporte():
+    print("\n" + "="*60)
+    print("PRECIOS POR TIPO DE TRANSPORTE".center(60))
+    print("="*60)
+    print(f"{'Colectivo:':<15} ${Pboleto[0]}")
+    print(f"{'Tren:':<15} ${Pboleto[1]}")
+    print(f"{'Subte:':<15} ${Pboleto[2]}")
+    print("="*60 + "\n")
 
 def menuEstadisticas(mTransporte, usrActivos):
-    print(f"-------------------\n\nDatos de transporte del mes: \n  1. El usuarios con más gastos \n  2. El transporte más y el menos utilizado. \n  3. El promedio general de lo gastado por los pasajeros. \n  4. El gasto total de todos los pasajeros. \n  5. El monto recibido de los 3 beneficiarios. \n  0. Volver al inicio \n\n-------------------\n")
-    res = int(input("Ingrese una opción: "))
-    while(res > 0 or res <= 5):
-        if (res == 1): 
-            usuarioMasGasto(mTransporte, usrActivos)
-            print(f"\nEl usuario que más gastó en el mes fue {usuarioMasGasto(mTransporte, usrActivos)[0]} con un total de ${usuarioMasGasto(mTransporte, usrActivos)[1]}\n")
-        elif(res == 2):
-            transporteMasMenosUtilizado(mTransporte)
-            print(f"\nEl transporte más utilizado fue el {transporteMasMenosUtilizado(mTransporte)[0]} y el menos utilizado fue el {transporteMasMenosUtilizado(mTransporte)[1]}\n")
-        elif(res == 3):
-            print(f"\nEl promedio general de lo gastado por los pasajeros es de: ${promedioGasto(mTransporte, usrActivos):.2f}\n")
-        elif(res == 4):
-            print(f"\nEl gasto total de todos los pasajeros es de: ${gastoTotal(mTransporte)}\n")
-        elif(res == 5):
-            beneficiarios = montoBeneficiarios(mTransporte)
-            print("\nMontos recibidos por los beneficiarios:")
-            # Crear funcion para mostrar los beneficiarios y sus montos
-        elif(res == 0):
-            print("\nVolviendo al inicio...")
-            time.sleep(1)
+    while True:
+        print(
+            "\n" + "="*60 + "\n"
+            "ANÁLISIS ESTADÍSTICOS\n"
+            "" + "-"*60 + "\n"
+            "1. Mostrar usuario con más gastos\n"
+            "2. Mostrar transporte más y menos utilizado\n"
+            "3. Mostrar promedio general de gastos por pasajero\n"
+            "4. Mostrar gasto total de todos los pasajeros\n"
+            "5. Mostrar monto total redistribuido (5%)\n"
+            "0. Volver al menú principal\n"
+            "" + "="*60 + "\n"
+        )
+        entrada = input("Ingrese una opción: ")
+        if entrada.isdigit():
+            res = int(entrada)
+            if res == 0:
+                print("\nVolviendo al menú principal...")
+                break
+            elif res == 1:
+                usuario, total = usuarioMasGasto(mTransporte, usrActivos)
+                print(f"\nEl usuario que más gastó en el mes fue {usuario} con un total de ${total}\n")
+            elif res == 2:
+                mas_utilizado, menos_utilizado = transporteMasMenosUtilizado(mTransporte)
+                print(f"\nEl transporte más utilizado fue el {mas_utilizado} y el menos utilizado fue el {menos_utilizado}\n")
+            elif res == 3:
+                print(f"\nEl promedio general de lo gastado por los pasajeros es de: ${promedioGasto(mTransporte, usrActivos):.2f}\n")
+            elif res == 4:
+                print(f"\nEl gasto total de todos los pasajeros es de: ${gastoTotal(mTransporte)}\n")
+            elif res == 5:
+                beneficiarios = montoBeneficiarios(mTransporte)
+                print("\nMontos recibidos por los beneficiarios:")
+                # Aquí se puede agregar el código para mostrar los beneficiarios y sus montos
+                for benef in beneficiarios:
+                    print(f"- {benef}: ${beneficiarios[benef]:.2f}")
+            else:
+                print("\nOpción inválida!")
         else:
-            print("\nOpción inválida!")
-        print(f"-------------------\n\nDatos de transporte del mes: \n  1. El usuarios con más gastos \n  2. El transporte más y el menos utilizado. \n  3. El promedio general de lo gastado por los pasajeros. \n  4. El gasto total de todos los pasajeros. \n  5. El monto recibido de los 3 beneficiarios. \n  0. Volver al inicio \n\n-------------------\n")
-        res = int(input("Ingrese una opción: "))
-    main() # Vuelve al inicio del programa
+            print("\nError: Por favor ingrese un número válido.")
 
 def usuarioMasGasto(mTransporte, usrActivos):
     gastosTotales = [0 for _ in range(len(usrActivos))] # Inicializa una lista para almacenar los gastos totales de cada usuario
@@ -162,7 +177,5 @@ def montoBeneficiarios(mTransporte):
     }
     return beneficiarios
 
-# Punto de entrada del programa
-if __name__=="__main__":
-    print("\nBienvenido a MOVI (Movilidad Optimizada Virtual e Integral)")
-    main()
+print("\nBienvenido a MOVI (Movilidad Optimizada Virtual e Integral)")
+main()
