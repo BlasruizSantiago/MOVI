@@ -6,7 +6,7 @@ usuarios = ["Pedro Pascal", "John Doe", "Brad Pitt"]
 
 def main():
     mTransporte = crearMatriz(usuarios, TRANSPORTES, PRECIO_BOLETO) # Matriz usuarios x transporte
-    opciones_validas = [0, 1, 2, 3]
+    opciones_validas = [0, 1, 2, 3, 4]
     res = -1
     while res not in opciones_validas:
         print(
@@ -16,6 +16,7 @@ def main():
             "1. Mostrar listado de usuarios\n"
             "2. Mostrar precios por transporte\n"
             "3. Análisis estadísticas\n"
+            "4. Mostrar matriz de gastos por usuario\n"
             "0. Salir del sistema\n"
             "" + "="*50 + "\n"
         )
@@ -34,6 +35,8 @@ def main():
         mostrarPreciosTransporte()
     elif res == 3:
         menuEstadisticas(mTransporte, usuarios)  # Muestra el menú de estadísticas
+    elif res == 4:
+        mostrarGastosxUsuario(mTransporte, usuarios)  # Muestra el menú de estadísticas
     elif res == 0:
         print("\nSaliendo del sistema...")
         return
@@ -57,10 +60,9 @@ def mostrarGastosxUsuario(mTransporte, usrActivos):
         print(usrActivos[i].ljust(20), end="")
         
         # Imprimir gastos por tipo de transporte para este usuario
-        for gastado in range(len(mTransporte[0])):
-            # Calcular el total gastado por este usuario en este transporte
-            print(f"| ${str(gastado).rjust(10)} ", end="")
-        print()  # Nueva línea para el siguiente usuario
+        for col in range(len(mTransporte[0])):
+            print(f"| ${str(mTransporte[i][col]).rjust(10)} ", end="")
+        print()
     
     print("-" * 60 + "\n")
 
