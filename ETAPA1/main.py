@@ -54,7 +54,6 @@ def mostrarGastosxUsuario(mTransporte, usrActivos):
     
     # Imprimir filas de datos
     for i in range(len(usrActivos)):
-        # Imprimir nombre de usuario
         print(usrActivos[i].ljust(20), end="")
         
         # Imprimir gastos por tipo de transporte para este usuario
@@ -108,7 +107,6 @@ def menuEstadisticas(mTransporte, usuarios):
             elif res == 5:
                 beneficiarios, monto = montoBeneficiarios(mTransporte, usuarios)
                 print("\nMontos recibidos por los beneficiarios:")
-                # Aquí se puede agregar el código para mostrar los beneficiarios y sus montos
                 for benef in beneficiarios:
                     print(f"- {benef}: ${monto}")
             else:
