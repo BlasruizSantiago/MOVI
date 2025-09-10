@@ -1,4 +1,4 @@
-from funcModule import crearMatriz, mostrarUsuarios, existeUsr  # Importa las funciones del módulo
+from funcModule import crearMatriz, mostrarUsuarios  # Importa las funciones del módulo
 
 TRANSPORTES = ['Colectivo', 'Tren', 'Subte']
 PRECIO_BOLETO = [60, 120, 250]
