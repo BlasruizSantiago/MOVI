@@ -1,4 +1,4 @@
-from funcModule import crearMatriz, mostrarUsuarios  # Importa las funciones del módulo
+from funcModule import crearMatriz, mostrarUsuarios # Importa las funciones del módulo
 
 TRANSPORTES = ['Colectivo', 'Tren', 'Subte']
 PRECIO_BOLETO = [60, 120, 250]
@@ -40,7 +40,7 @@ def main():
     main() # Vuelve al inicio del programa
 
 # Procedimiento que muestra la matriz creada
-def mostrarGastosxUsuario(mTransporte, usrActivos):    
+def mostrarGastosxUsuario(mTransporte, usrActivos):
     # Imprimir encabezado
     print("\n" + "-" * 60)
     print("GASTOS POR USUARIO Y TIPO DE TRANSPORTE".center(60))
@@ -122,11 +122,11 @@ def usuarioMasGasto(mTransporte, usrActivos):
 
 def transporteMasMenosUtilizado(mTransporte):
     totalViajesPorTransporte = [0, 0, 0]
-    for h in range(3):  # Para cada transporte
-        for i in range(len(mTransporte)):  # Para cada usuario
+    for h in range(len(mTransporte)):
+        for i in range(3):
             # Calcula la cantidad de viajes como monto gastado / precio del boleto
-            viajes = mTransporte[i][h] // PRECIO_BOLETO[h]
-            totalViajesPorTransporte[h] += viajes
+            viajes = mTransporte[h][i] // PRECIO_BOLETO[i]
+            totalViajesPorTransporte[i] += viajes
     transporteMasUtilizado = TRANSPORTES[totalViajesPorTransporte.index(max(totalViajesPorTransporte))]
     transporteMenosUtilizado = TRANSPORTES[totalViajesPorTransporte.index(min(totalViajesPorTransporte))]
     return transporteMasUtilizado, transporteMenosUtilizado
