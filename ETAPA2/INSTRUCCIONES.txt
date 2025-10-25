@@ -1,0 +1,62 @@
+INSTRUCCIONES DE INSTALACIÓN Y USO
+====================================
+
+PASO 1: CREAR CARPETA DE DATOS
+-------------------------------
+Antes de ejecutar el programa por primera vez, debe crear manualmente la carpeta 
+para los archivos generados:
+
+En Windows (CMD o PowerShell):
+    mkdir datos_generados
+
+En Linux/Mac:
+    mkdir datos_generados
+
+O simplemente crear la carpeta "datos_generados" dentro de ETAPA2 usando el 
+explorador de archivos.
+
+
+PASO 2: EJECUTAR EL PROGRAMA
+-----------------------------
+    python main.py
+
+
+ESTRUCTURA DE CARPETAS
+----------------------
+ETAPA2/
+├── main.py
+├── generador_datos.py
+├── procesador.py
+├── estadisticas.py
+├── README.md
+├── INSTRUCCIONES.txt
+└── datos_generados/          ← Crear esta carpeta manualmente
+    ├── usuarios.txt          (se genera automáticamente)
+    ├── logs.txt              (se genera automáticamente)
+    ├── pasajeros.csv         (se genera automáticamente)
+    ├── viajes.csv            (se genera automáticamente)
+    ├── tarifas.csv           (se genera automáticamente)
+    ├── gastos_por_pasajero.txt       (se genera automáticamente)
+    ├── estadisticas_transporte.txt   (se genera automáticamente)
+    ├── resumen_general.txt           (se genera automáticamente)
+    └── mayor_gasto.txt               (se genera automáticamente)
+
+
+RESTRICCIONES TÉCNICAS
+-----------------------
+- No se usa el módulo 'os'
+- Solo se usan módulos estándar: random (solo randint) y datetime
+- No se usa la librería csv
+- No se usa programación orientada a objetos
+
+
+FLUJO DE USO RECOMENDADO
+-------------------------
+1. Crear carpeta "datos_generados"
+2. Ejecutar: python main.py
+3. Registrar usuario (opción 1)
+4. Iniciar sesión (opción 2)
+5. Acceder al sistema (opción 3)
+6. Generar datos aleatorios (opción 1)
+7. Procesar datos (opción 3)
+8. Ver reportes (opción 4)

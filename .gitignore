@@ -1,0 +1,39 @@
+# Archivos generados por el sistema
+usuarios.txt
+logs.txt
+pasajeros.csv
+viajes.csv
+tarifas.csv
+gastos_por_pasajero.txt
+estadisticas_transporte.txt
+resumen_general.txt
+mayor_gasto.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Entornos virtuales
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos temporales
+*.tmp
+*.bak
+*.log

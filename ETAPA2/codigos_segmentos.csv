@@ -1,0 +1,4 @@
+codigo,descripcion,rango_edad
+1,menores,<18
+2,adultos,18-64
+3,adultos_mayores,>=65
