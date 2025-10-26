@@ -52,6 +52,79 @@ def registrar_usuarios():
     except KeyboardInterrupt:
         print("\n\nRegistro cancelado por el usuario.")
 
+
+def dar_baja_usuario():
+    """Elimina un usuario del archivo usuarios.txt"""
+    try:
+        print("\n=== DAR DE BAJA USUARIO ===")
+        
+        # Verificar que existan usuarios
+        try:
+            pf = open("datos_generados/usuarios.txt", "r")
+            lineas = pf.readlines()
+            pf.close()
+        except FileNotFoundError:
+            print("Error: No hay usuarios registrados.")
+            return
+        
+        if not lineas:
+            print("Error: No hay usuarios registrados.")
+            return
+        
+        # Mostrar usuarios existentes
+        print("\nUsuarios registrados:")
+        usuarios = []
+        for linea in lineas:
+            datos = linea.strip().split(",")
+            if len(datos) >= 1:
+                usuarios.append(datos[0])
+                print(f"  - {datos[0]}")
+        
+        # Solicitar nombre de usuario a eliminar
+        nombre_usuario = input("\nIngrese nombre de usuario a eliminar (o 'cancelar' para volver): ").strip()
+        
+        if nombre_usuario.lower() == "cancelar":
+            print("Operación cancelada.")
+            return
+        
+        if not nombre_usuario:
+            print("Error: El nombre de usuario no puede estar vacío.")
+            return
+        
+        # Verificar que el usuario existe
+        if nombre_usuario not in usuarios:
+            print(f"Error: El usuario '{nombre_usuario}' no existe.")
+            return
+        
+        # Confirmar eliminación
+        confirmacion = input(f"¿Está seguro que desea eliminar el usuario '{nombre_usuario}'? (si/no): ").strip().lower()
+        
+        if confirmacion != "si":
+            print("Operación cancelada.")
+            return
+        
+        # Eliminar usuario del archivo
+        nuevas_lineas = []
+        for linea in lineas:
+            datos = linea.strip().split(",")
+            if len(datos) >= 1 and datos[0] != nombre_usuario:
+                nuevas_lineas.append(linea)
+        
+        # Reescribir archivo sin el usuario eliminado
+        pf = open("datos_generados/usuarios.txt", "w")
+        for linea in nuevas_lineas:
+            pf.write(linea)
+        pf.close()
+        
+        print(f"✓ Usuario '{nombre_usuario}' eliminado exitosamente.")
+        registrar_log("SISTEMA", f"Usuario {nombre_usuario} fue dado de baja")
+        
+    except KeyboardInterrupt:
+        print("\n\nOperación cancelada por el usuario.")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
+
+
 def realizar_login():
     """Realiza el login de un usuario y retorna el nombre de usuario si es exitoso"""
     try:
@@ -276,8 +349,9 @@ def main():
         while True:
             print("\n=== MENÚ PRINCIPAL ===")
             print("1. Registrar usuario")
-            print("2. Iniciar sesión")
-            print("3. Acceder al sistema")
+            print("2. Dar de baja usuario")
+            print("3. Iniciar sesión")
+            print("4. Acceder al sistema")
             print("0. Salir")
         
             opcion = input("\nSeleccione una opción: ")
@@ -285,8 +359,10 @@ def main():
             if opcion == "1":
                 registrar_usuarios()
             elif opcion == "2":
-                usuario_logueado = realizar_login()
+                dar_baja_usuario()
             elif opcion == "3":
+                usuario_logueado = realizar_login()
+            elif opcion == "4":
                 mostrar_menu(usuario_logueado)
             elif opcion == "0":
                 print("¡Hasta luego!")

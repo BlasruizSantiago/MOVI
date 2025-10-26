@@ -1,26 +1,26 @@
-📌 Descripción
-MOVI es un sistema simple de gestión de transportes desarrollado como parte de la materia Programación 1 de la universidad UADE
-El objetivo del proyecto es aplicar los fundamentos de la programación estructurada y la manipulación de datos para simular la administración de viajes en una empresa de transporte.
+## 📌 Descripción
 
-🛠️ Tecnologías utilizadas
-- Lenguaje: Python
-- Paradigma: Programación estructurada
-- IDE recomendado: VS Code
+MOVI es un sistema de gestión de transportes desarrollado como proyecto académico para la materia Programación 1 de UADE. Aplica fundamentos de programación estructurada y manipulación de datos para simular la administración de viajes en una empresa de transporte, fortaleciendo competencias en lógica de programación, estructuras de datos y resolución de problemas.
 
-🚀 funcionalidades principales de tu proyecto serían:
+## 🛠️ Tecnologías
 
-- Alta y baja de usuarios → permite registrar nuevos pasajeros o eliminar los existentes.
-- Registro de gastos diarios → cada pasajero tiene asociados sus viajes y montos según el transporte utilizado (colectivo, tren, subte).
-- Cálculo del usuario con mayor gasto → identifica quién gastó más en el período analizado.
-- Determinación del transporte más y menos utilizado → analiza la frecuencia de uso de colectivo, tren y subte.
-- Promedio general de gastos → obtiene cuánto gastan en promedio los pasajeros.
-- Gasto total de todos los pasajeros → muestra la suma global de los consumos.
-- Distribución del 5% de las ganancias a los 3 usuarios más frecuentes → calcula cuánto recibe cada beneficiario.
+- **Lenguaje**: Python 3.x
+- **Paradigma**: Programación estructurada
+- **Módulos**: Solo `random` y `datetime` (estándar)
+- **Restricciones**: Sin módulos externos, sin POO, sin librería CSV
 
-🎯 Objetivo académico
+## 🚀 Funcionalidades
 
-Este proyecto tiene como finalidad aplicar los conocimientos adquiridos en la materia Programación I, desarrollando un sistema que permita gestionar de forma eficiente los datos de usuarios, sus gastos y el uso de distintos medios de transporte.
-Además de fortalecer las competencias en lógica de programación, estructuras de datos y resolución de problemas, integrando conceptos teóricos en una implementación práctica que simula un caso real.
+- **ABM de usuarios** → Alta, Baja y autenticación con login/contraseña
+- **Generación de datos** → Archivos CSV aleatorios (pasajeros, viajes, tarifas)
+- **Registro de viajes** → Ingreso manual de viajes individuales
+- **Procesamiento y análisis** → Cálculo de estadísticas por pasajero y tipo de transporte
+- **Reportes**:
+  - Gastos por pasajero (ordenados)
+  - Estadísticas por transporte (colectivo, tren, subte)
+  - Resumen general del sistema
+  - Pasajero con mayor gasto
+- **Sistema de logs** → Auditoría completa con timestamps
 
 ## 📂 Estructura del Proyecto
 

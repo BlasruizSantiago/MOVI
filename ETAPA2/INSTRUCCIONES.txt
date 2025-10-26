@@ -52,11 +52,26 @@ RESTRICCIONES TÉCNICAS
 
 FLUJO DE USO RECOMENDADO
 -------------------------
-1. Crear carpeta "datos_generados"
-2. Ejecutar: python main.py
-3. Registrar usuario (opción 1)
-4. Iniciar sesión (opción 2)
-5. Acceder al sistema (opción 3)
-6. Generar datos aleatorios (opción 1)
-7. Procesar datos (opción 3)
-8. Ver reportes (opción 4)
+MENÚ PRINCIPAL:
+1. Registrar usuario (Alta) - Crear nuevo usuario
+2. Dar de baja usuario (Baja) - Eliminar usuario existente
+3. Iniciar sesión - Autenticarse en el sistema
+4. Acceder al sistema - Entrar al menú de operaciones
+0. Salir
+
+DENTRO DEL SISTEMA (opción 4):
+1. Generar datos aleatorios - Crear archivos CSV de prueba
+2. Registrar viaje de pasajero - Ingresar viaje manual
+3. Procesar datos y generar estadísticas - Analizar datos
+4. Ver reportes - Consultar estadísticas generadas
+5. Ver logs del sistema - Revisar actividad del sistema
+0. Volver al menú principal
+
+EJEMPLO DE USO:
+1. Ejecutar: python main.py
+2. Registrar usuario (opción 1 del menú principal)
+3. Iniciar sesión (opción 3 del menú principal)
+4. Acceder al sistema (opción 4 del menú principal)
+5. Generar datos aleatorios (opción 1 del sistema)
+6. Procesar datos (opción 3 del sistema)
+7. Ver reportes (opción 4 del sistema)
