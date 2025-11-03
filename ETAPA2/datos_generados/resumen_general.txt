@@ -1,0 +1,13 @@
+metrica,valor
+total_viajes,203
+total_pasajeros,80
+total_recaudado,39711.53
+promedio_gasto_viaje,195.62
+gasto_maximo,297.99
+gasto_minimo,100.70
+viajes_codigo_1,51
+porcentaje_codigo_1,25.12
+viajes_codigo_2,79
+porcentaje_codigo_2,38.92
+viajes_codigo_3,73
+porcentaje_codigo_3,35.96

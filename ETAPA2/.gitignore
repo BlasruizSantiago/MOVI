@@ -1,7 +1,3 @@
-# Archivos generados (mantener directorio y README)
-datos_generados/*
-!datos_generados/README.md
-
 # Python
 __pycache__/
 *.py[cod]
