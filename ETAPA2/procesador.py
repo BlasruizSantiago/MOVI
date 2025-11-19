@@ -15,12 +15,14 @@ def cargar_viajes_desde_csv():
     viajes = []
     
     try:
-        pf = open("datos_generados/viajes.csv", "r")
-        lineas = pf.readlines()
-        pf.close()
+        pf = open("./datos_generados/viajes.csv", "r")
+        primera_linea = True
         
-        # Saltar encabezado
-        for linea in lineas[1:]:
+        for linea in pf:
+            if primera_linea:
+                primera_linea = False
+                continue  # Saltar encabezado
+            
             datos = linea.strip().split(",")
             if len(datos) == 4:
                 viaje = {
@@ -31,6 +33,7 @@ def cargar_viajes_desde_csv():
                 }
                 viajes.append(viaje)
         
+        pf.close()
         return viajes
     except FileNotFoundError:
         return []
@@ -43,11 +46,14 @@ def cargar_pasajeros_desde_csv():
     pasajeros = {}
     
     try:
-        pf = open("datos_generados/pasajeros.csv", "r")
-        lineas = pf.readlines()
-        pf.close()
+        pf = open("./datos_generados/pasajeros.csv", "r")
+        primera_linea = True
         
-        for linea in lineas[1:]:  # Saltar encabezado
+        for linea in pf:
+            if primera_linea:
+                primera_linea = False
+                continue  # Saltar encabezado
+            
             datos = linea.strip().split(",")
             if len(datos) == 3:
                 id_pasajero = datos[0]
@@ -56,6 +62,7 @@ def cargar_pasajeros_desde_csv():
                     "edad": int(datos[2])
                 }
         
+        pf.close()
         return pasajeros
     except FileNotFoundError:
         return {}
@@ -72,7 +79,7 @@ def generar_archivo_gastos_por_pasajero(viajes, pasajeros):
     gastos_por_pasajero = estadisticas.agrupar_gastos_por_pasajero(viajes)
     top_pasajeros = estadisticas.obtener_top_n_pasajeros(gastos_por_pasajero, len(gastos_por_pasajero))
     
-    pf = open("datos_generados/gastos_por_pasajero.txt", "w")
+    pf = open("./datos_generados/gastos_por_pasajero.txt", "w")
     pf.write("id_pasajero,nombre,gasto_total\n")
     
     for id_pasajero, gasto_total in top_pasajeros:
@@ -81,7 +88,7 @@ def generar_archivo_gastos_por_pasajero(viajes, pasajeros):
     
     pf.close()
     
-    print("✓ Archivo 'gastos_por_pasajero.txt' generado")
+    print("[OK] Archivo 'gastos_por_pasajero.txt' generado")
 
 
 def generar_archivo_estadisticas_transporte(viajes):
@@ -93,7 +100,7 @@ def generar_archivo_estadisticas_transporte(viajes):
     stats = estadisticas.calcular_estadisticas_transporte(viajes)
     porcentajes = estadisticas.calcular_porcentajes_transporte(viajes)
     
-    pf = open("datos_generados/estadisticas_transporte.txt", "w")
+    pf = open("./datos_generados/estadisticas_transporte.txt", "w")
     pf.write("codigo_transporte,cantidad_viajes,porcentaje_uso,total_recaudado,gasto_promedio,gasto_maximo,gasto_minimo\n")
     
     for codigo, datos in stats.items():
@@ -101,7 +108,7 @@ def generar_archivo_estadisticas_transporte(viajes):
     
     pf.close()
     
-    print("✓ Archivo 'estadisticas_transporte.txt' generado")
+    print("[OK] Archivo 'estadisticas_transporte.txt' generado")
 
 
 def generar_archivo_resumen_general(viajes, gastos_por_pasajero):
@@ -112,7 +119,7 @@ def generar_archivo_resumen_general(viajes, gastos_por_pasajero):
     """
     resumen = estadisticas.generar_resumen_estadistico(viajes, gastos_por_pasajero)
     
-    pf = open("datos_generados/resumen_general.txt", "w")
+    pf = open("./datos_generados/resumen_general.txt", "w")
     pf.write("metrica,valor\n")
     pf.write(f"total_viajes,{resumen['total_viajes']}\n")
     pf.write(f"total_pasajeros,{resumen['total_pasajeros']}\n")
@@ -128,7 +135,7 @@ def generar_archivo_resumen_general(viajes, gastos_por_pasajero):
     
     pf.close()
     
-    print("✓ Archivo 'resumen_general.txt' generado")
+    print("[OK] Archivo 'resumen_general.txt' generado")
 
 
 def generar_archivo_mayor_gasto(viajes, pasajeros):
@@ -142,7 +149,7 @@ def generar_archivo_mayor_gasto(viajes, pasajeros):
     gastos_por_pasajero = estadisticas.agrupar_gastos_por_pasajero(viajes)
     id_pasajero, gasto_total = estadisticas.encontrar_pasajero_mayor_gasto(gastos_por_pasajero)
     
-    pf = open("datos_generados/mayor_gasto.txt", "w")
+    pf = open("./datos_generados/mayor_gasto.txt", "w")
     
     if id_pasajero:
         info_pasajero = pasajeros.get(id_pasajero, {})
@@ -164,7 +171,7 @@ def generar_archivo_mayor_gasto(viajes, pasajeros):
     
     pf.close()
     
-    print("✓ Archivo 'mayor_gasto.txt' generado")
+    print("[OK] Archivo 'mayor_gasto.txt' generado")
 
 
 def procesar_todos_los_datos(usuario):
@@ -198,7 +205,7 @@ def procesar_todos_los_datos(usuario):
         generar_archivo_resumen_general(viajes, gastos_por_pasajero)
         generar_archivo_mayor_gasto(viajes, pasajeros)
         
-        print("\n✓ Procesamiento completado exitosamente\n")
+        print("\n[OK] Procesamiento completado exitosamente\n")
         
     except Exception as e:
         print(f"Error durante el procesamiento: {e}")

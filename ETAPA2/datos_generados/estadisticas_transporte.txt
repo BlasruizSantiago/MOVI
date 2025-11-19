@@ -1,4 +1,1 @@
 codigo_transporte,cantidad_viajes,porcentaje_uso,total_recaudado,gasto_promedio,gasto_maximo,gasto_minimo
-1,51,25.12,11735.29,230.10,297.99,155.38
-2,79,38.92,13410.47,169.75,249.72,100.70
-3,73,35.96,14565.77,199.53,279.55,130.85

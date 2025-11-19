@@ -17,7 +17,7 @@ def registrar_usuarios():
             
                 # Verificar si el usuario ya existe
                 try:
-                    pf = open("datos_generados/usuarios.txt", "r")
+                    pf = open("./datos_generados/usuarios.txt", "r")
                     for linea in pf:
                         usuario_existente = linea.strip().split(",")[0]
                         if usuario_existente == nombre_usuario:
@@ -39,7 +39,7 @@ def registrar_usuarios():
                     continue
             
                 # Guardar el usuario en el archivo
-                pf = open("datos_generados/usuarios.txt", "a")
+                pf = open("./datos_generados/usuarios.txt", "a")
                 pf.write(f"{nombre_usuario},{contraseña}\n")
                 pf.close()
             
@@ -58,27 +58,31 @@ def dar_baja_usuario():
     try:
         print("\n=== DAR DE BAJA USUARIO ===")
         
-        # Verificar que existan usuarios
+        # Verificar que existan usuarios y cargarlos
         try:
-            pf = open("datos_generados/usuarios.txt", "r")
-            lineas = pf.readlines()
+            pf = open("./datos_generados/usuarios.txt", "r")
+            usuarios = []
+            lineas_archivo = []
+            
+            for linea in pf:
+                lineas_archivo.append(linea)
+                datos = linea.strip().split(",")
+                if len(datos) >= 1:
+                    usuarios.append(datos[0])
+            
             pf.close()
         except FileNotFoundError:
             print("Error: No hay usuarios registrados.")
             return
         
-        if not lineas:
+        if not usuarios:
             print("Error: No hay usuarios registrados.")
             return
         
         # Mostrar usuarios existentes
         print("\nUsuarios registrados:")
-        usuarios = []
-        for linea in lineas:
-            datos = linea.strip().split(",")
-            if len(datos) >= 1:
-                usuarios.append(datos[0])
-                print(f"  - {datos[0]}")
+        for usuario in usuarios:
+            print(f"  - {usuario}")
         
         # Solicitar nombre de usuario a eliminar
         nombre_usuario = input("\nIngrese nombre de usuario a eliminar (o 'cancelar' para volver): ").strip()
@@ -105,13 +109,13 @@ def dar_baja_usuario():
         
         # Eliminar usuario del archivo
         nuevas_lineas = []
-        for linea in lineas:
+        for linea in lineas_archivo:
             datos = linea.strip().split(",")
             if len(datos) >= 1 and datos[0] != nombre_usuario:
                 nuevas_lineas.append(linea)
         
         # Reescribir archivo sin el usuario eliminado
-        pf = open("datos_generados/usuarios.txt", "w")
+        pf = open("./datos_generados/usuarios.txt", "w")
         for linea in nuevas_lineas:
             pf.write(linea)
         pf.close()
@@ -140,7 +144,7 @@ def realizar_login():
             
                 # Verificar si el usuario existe antes de pedir la contraseña
                 try:
-                    pf = open("datos_generados/usuarios.txt", "r")
+                    pf = open("./datos_generados/usuarios.txt", "r")
                     usuarios_existentes = {}
                 
                     for linea in pf:
@@ -189,7 +193,7 @@ def registrar_log(usuario, mensaje):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
         # Ejemplo de valor obtenido: 2023-05-10 14:30:00
         
-        pf = open("datos_generados/logs.txt", "a")
+        pf = open("./datos_generados/logs.txt", "a")
         pf.write(f"[{timestamp}] {usuario}: {mensaje}\n")
         pf.close()
 
@@ -272,7 +276,7 @@ def registrar_viaje(usuario):
             
                 fecha = datetime.now().strftime("%Y-%m-%d")
             
-                pf = open("datos_generados/viajes.csv", "a")
+                pf = open("./datos_generados/viajes.csv", "a")
                 pf.write(f"{id_pasajero},{codigo_transporte},{gasto_float},{fecha}\n")
                 pf.close()
             
@@ -308,7 +312,7 @@ def mostrar_reportes(usuario):
         
         if opcion in archivos:
             try:
-                pf = open(f"datos_generados/{archivos[opcion]}", "r")
+                pf = open(f"./datos_generados/{archivos[opcion]}", "r")
                 contenido = pf.read()
                 pf.close()
                 print(f"\n{'='*60}")
@@ -326,8 +330,12 @@ def mostrar_reportes(usuario):
 def ver_logs(usuario):
     """Muestra los últimos registros del log"""
     try:
-        pf = open("datos_generados/logs.txt", "r")
-        lineas = pf.readlines()
+        pf = open("./datos_generados/logs.txt", "r")
+        lineas = []
+        
+        for linea in pf:
+            lineas.append(linea)
+        
         pf.close()
         
         print(f"\n=== ÚLTIMOS 20 REGISTROS DEL LOG ===")

@@ -1,8 +1,8 @@
-# Sistema de Registro y Supervisión de Pasajeros de Transporte Público
+# Sistema de Registro y Supervisión de Pasajeros de Transporte Privado
 
 ## Descripción del Proyecto
 
-Sistema digital que permite registrar y supervisar la actividad de los pasajeros de transporte público, contemplando sus gastos diarios y el tipo de transporte utilizado (colectivo, tren, subte). El sistema automatiza el cálculo del gasto total, el promedio de consumo por pasajero y la identificación del usuario con mayores gastos, además de determinar cuál es el transporte más y menos utilizado.
+Sistema digital que permite registrar y supervisar la actividad de los pasajeros de transporte privado, contemplando sus gastos diarios y el tipo de transporte utilizado (colectivo, tren, subte). El sistema automatiza el cálculo del gasto total, el promedio de consumo por pasajero y la identificación del usuario con mayores gastos, además de determinar cuál es el transporte más y menos utilizado.
 
 ## Características Principales
 

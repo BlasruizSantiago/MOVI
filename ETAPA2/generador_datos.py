@@ -44,45 +44,99 @@ def generar_archivo_pasajeros():
     ids = generar_ids_pasajeros(cantidad_pasajeros)
     nombres = generar_nombres_aleatorios(cantidad_pasajeros)
     
-    # Edades aleatorias entre 18 y 70
-    edades = [randint(18, 70) for _ in range(cantidad_pasajeros)]
+    # Edades aleatorias entre 10 y 75 (para cubrir todos los segmentos)
+    edades = [randint(10, 75) for _ in range(cantidad_pasajeros)]
     
-    pf = open("datos_generados/pasajeros.csv", "w")
+    pf = open("./datos_generados/pasajeros.csv", "w")
     pf.write("id_pasajero,nombre,edad\n")
     
     for i in range(cantidad_pasajeros):
         pf.write(f"{ids[i]},{nombres[i]},{edades[i]}\n")
     
     pf.close()
-    print(f"✓ Archivo 'pasajeros.csv' generado con {cantidad_pasajeros} registros")
+    print(f"[OK] Archivo 'pasajeros.csv' generado con {cantidad_pasajeros} registros")
+
+
+def obtener_codigo_segmento(edad):
+    """Determina el código de segmento según la edad del pasajero
+    Códigos: 1=<18, 2=18-64, 3=>=65
+    """
+    if edad < 18:
+        return 1
+    elif edad >= 65:
+        return 3
+    else:
+        return 2
+
+
+def cargar_tarifas():
+    """Carga las tarifas desde el archivo tarifas.csv
+    Retorna un diccionario con clave (codigo_transporte, codigo_segmento)
+    """
+    tarifas = {}
+    
+    try:
+        pf = open("./datos_generados/tarifas.csv", "r")
+        primera_linea = True
+        
+        for linea in pf:
+            if primera_linea:
+                primera_linea = False
+                continue  # Saltar encabezado
+            
+            datos = linea.strip().split(",")
+            if len(datos) == 3:
+                codigo_transporte = int(datos[0])
+                codigo_segmento = int(datos[1])
+                tarifa = float(datos[2])
+                tarifas[(codigo_transporte, codigo_segmento)] = tarifa
+        
+        pf.close()
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo de tarifas")
+    
+    return tarifas
 
 
 def generar_archivo_viajes():
     """Genera archivo CSV con viajes aleatorios (Archivo 2 de entrada)
     Usa códigos: 1=colectivo, 2=tren, 3=subte
+    Los gastos se calculan según las tarifas definidas y la edad del pasajero
     """
     try:
-        # Leer IDs de pasajeros existentes
-        pf = open("datos_generados/pasajeros.csv", "r")
-        lineas = pf.readlines()[1:]  # Saltar encabezado
-        pf.close()
+        # Leer pasajeros con sus edades
+        pf = open("./datos_generados/pasajeros.csv", "r")
+        primera_linea = True
         
-        ids_pasajeros = [linea.split(",")[0] for linea in lineas]
+        # Crear diccionario de pasajeros: {id: edad}
+        pasajeros = {}
+        for linea in pf:
+            if primera_linea:
+                primera_linea = False
+                continue  # Saltar encabezado
+            
+            datos = linea.strip().split(",")
+            if len(datos) >= 3:
+                id_pasajero = datos[0]
+                edad = int(datos[2])
+                pasajeros[id_pasajero] = edad
+        
+        pf.close()
+        ids_pasajeros = list(pasajeros.keys())
     except FileNotFoundError:
         print("Error: Primero debe generar el archivo de pasajeros")
+        return
+    
+    # Cargar tarifas desde el archivo
+    tarifas = cargar_tarifas()
+    if not tarifas:
+        print("Error: No se pudieron cargar las tarifas")
         return
     
     cantidad_viajes = randint(200, 500)
     codigos_transporte = [1, 2, 3]  # 1=colectivo, 2=tren, 3=subte
     
-    # Rangos de precios por código de transporte
-    precios = {
-        1: (150, 300),  # colectivo
-        2: (100, 250),  # tren
-        3: (120, 280)   # subte
-    }
-    
-    pf = open("datos_generados/viajes.csv", "w")
+    pf = open("./datos_generados/viajes.csv", "w")
     pf.write("id_pasajero,codigo_transporte,gasto,fecha\n")
     
     fechas = generar_fechas_aleatorias(cantidad_viajes)
@@ -90,13 +144,18 @@ def generar_archivo_viajes():
     for i in range(cantidad_viajes):
         id_pasajero = ids_pasajeros[randint(0, len(ids_pasajeros)-1)]
         codigo_transporte = codigos_transporte[randint(0, len(codigos_transporte)-1)]
-        min_precio, max_precio = precios[codigo_transporte]
-        gasto = randint(min_precio * 100, max_precio * 100) / 100.0
         
-        pf.write(f"{id_pasajero},{codigo_transporte},{gasto},{fechas[i]}\n")
+        # Obtener edad del pasajero y determinar su segmento
+        edad = pasajeros[id_pasajero]
+        codigo_segmento = obtener_codigo_segmento(edad)
+        
+        # Buscar la tarifa correspondiente
+        gasto = tarifas.get((codigo_transporte, codigo_segmento), 0.0)
+        
+        pf.write(f"{id_pasajero},{codigo_transporte},{gasto:.2f},{fechas[i]}\n")
     
     pf.close()
-    print(f"✓ Archivo 'viajes.csv' generado con {cantidad_viajes} registros")
+    print(f"[OK] Archivo 'viajes.csv' generado con {cantidad_viajes} registros (usando tarifas definidas)")
 
 
 def generar_archivo_tarifas():
@@ -121,14 +180,14 @@ def generar_archivo_tarifas():
         (3, 3, 115.00)   # adultos mayores
     ]
     
-    pf = open("datos_generados/tarifas.csv", "w")
+    pf = open("./datos_generados/tarifas.csv", "w")
     pf.write("codigo_transporte,codigo_segmento,tarifa\n")
     
     for codigo_trans, codigo_seg, tarifa in tarifas:
         pf.write(f"{codigo_trans},{codigo_seg},{tarifa:.2f}\n")
     
     pf.close()
-    print(f"✓ Archivo 'tarifas.csv' generado con {len(tarifas)} tarifas (3 tipos × 3 segmentos)")
+    print(f"[OK] Archivo 'tarifas.csv' generado con {len(tarifas)} tarifas (3 tipos x 3 segmentos)")
 
 
 def generar_archivos_aleatorios():
@@ -138,7 +197,7 @@ def generar_archivos_aleatorios():
         generar_archivo_pasajeros()
         generar_archivo_viajes()
         generar_archivo_tarifas()
-        print("\n✓ Todos los archivos fueron generados exitosamente\n")
+        print("\n[OK] Todos los archivos fueron generados exitosamente\n")
     except Exception as e:
         print(f"Error al generar archivos: {e}")
 

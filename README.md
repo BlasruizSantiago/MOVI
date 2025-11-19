@@ -39,23 +39,6 @@ MOVI/
 └── README.md
 ```
 
-## 🔒 Gestión de Datos Confidenciales
-
-El directorio `ETAPA2/datos_generados/` contiene archivos con información potencialmente confidencial (usuarios, contraseñas, datos personales). Por seguridad:
-
-- ✅ El directorio y su README.md **SÍ** están versionados
-- ❌ Los archivos de datos **NO** se suben al repositorio remoto
-- 📝 El `.gitignore` está configurado para excluir automáticamente:
-  - Archivos de usuarios y logs
-  - Archivos CSV de datos
-  - Archivos de reportes generados
-
-### Archivos excluidos del repositorio:
-- `usuarios.txt` - Credenciales de usuarios
-- `logs.txt` - Registro de actividades
-- `pasajeros.csv`, `viajes.csv`, `tarifas.csv` - Datos de entrada
-- `gastos_por_pasajero.txt`, `estadisticas_transporte.txt`, etc. - Reportes
-
 ## 🚀 Instalación y Uso
 
 1. **Clonar el repositorio:**
